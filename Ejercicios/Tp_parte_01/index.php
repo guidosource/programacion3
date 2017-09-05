@@ -10,6 +10,7 @@ $fabrica1->AgregarEmpleado($e2);
 $fabrica1->AgregarEmpleado($e2);
 $fabrica1->AgregarEmpleado($e2);
 
+echo $e1->Hablar("Español");
 echo $fabrica1->toString();
 echo "<br>";
 echo $fabrica1->CalcularSueldos();

@@ -36,7 +36,7 @@ abstract class Persona
 
     public function toString()
     {
-       return $this->_nombre."-".$this->_apellido."-".$this->_sexo."-".$this->_dni;
+       return $this->GetNombre()."-".$this->_apellido."-".$this->_sexo."-".$this->_dni;
        
     }
     public abstract function Hablar($idioma);
