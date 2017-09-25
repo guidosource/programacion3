@@ -1,0 +1,1 @@
+{"_nombre":"cafe","_precio":72.6,"_pathFoto":"..\/Modelo\/Imagenes\/cafe.jpg"}

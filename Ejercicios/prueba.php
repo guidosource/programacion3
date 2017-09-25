@@ -1,10 +1,9 @@
 <?php
 
-$ahora = date("Y-m-d H:i:s");
-$prueba = getdate();
+$archivo = $_FILES['archivo']['name'];
+var_dump($archivo);
+$extension = pathinfo($archivo,PATHINFO_EXTENSION);
+var_dump($extension);
 
-echo $ahora."<br>";
-
-echo $prueba;
 
 ?>
