@@ -1,0 +1,13 @@
+//1
+
+SELECT pNombre,Precio,Tamaño FROM productos ORDER BY pNombre ASC
+
+//2
+
+
+SELECT Nombre,Domicilio,Localidad FROM provedores WHERE provedores.Localidad = 'Quilmes'
+
+//3
+
+
+SELECT * FROM envios WHERE Cantidad > 199 and Cantidad < 301
