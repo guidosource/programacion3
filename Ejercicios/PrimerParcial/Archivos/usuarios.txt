@@ -1,0 +1,2 @@
+{"nombre":"guido","email":"guido@guid.com","perfil":"admin","edad":"27","clave":"123ASD"}
+{"nombre":"valentino","email":"valen@guid.com","perfil":"admin","edad":"27","clave":"123ASD"}
