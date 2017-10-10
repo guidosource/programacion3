@@ -54,9 +54,9 @@ class Comentario
         return false;
     }
 
-    public static function ArmarGrilla($email = NULL, $titulo = NULL)
+    public static function ArmarGrilla($email = NULL, $sabor = NULL)
     {
-        $resultados = Comentario::Resultados($email, $titulo);     
+        $resultados = Comentario::Resultados($email, $sabor);     
         $grilla = "<table>
         <thead>
             <tr>
@@ -93,10 +93,10 @@ class Comentario
         
     }
 
-    public static function Resultados($email = NULL, $titulo = NULL)
+    public static function Resultados($email = NULL, $sabor = NULL)
     {
-        if ($email != NULL && $titulo != NULL){
-            $comentarios = Comentario::TraerComentarios();
+        if ($email != NULL && $sabor != NULL){
+            $helados = Comentario::TraerComentarios();
             foreach ($comentarios as $item) {
                 if ($item->userEmail == $email && $item->titulo == $titulo) {
                     $usuario = Usuario::BuscarUsuario($email);

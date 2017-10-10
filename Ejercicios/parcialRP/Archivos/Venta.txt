@@ -1,0 +1,5 @@
+{"email":"guido@guido.com","sabor":"perro","tipo":"crema","precio":"12","cantidad":"4"}
+{"email":null,"sabor":null,"tipo":null,"precio":null,"cantidad":null}
+{"email":"juan@juan.com","sabor":"perro","tipo":"crema","precio":"12","cantidad":"4"}
+{"email":"guido@guido.com","sabor":"perro","tipo":"crema","precio":"12","cantidad":"3"}
+{"email":"guido@guido.com","sabor":"perro","tipo":"crema","precio":"12","cantidad":"3"}
