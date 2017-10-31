@@ -3,17 +3,17 @@ require_once 'AccesoDatos.php';
 
 class Estacionamiento{
 
-    private $_patente;
-    private $_color;
-    private $_foto;
-    private $_idEmpleadoE;
-    private $_fechaIngreso;
+    public $_patente;
+    public $_color;
+    public $_foto;
+    public $_idEmpleadoE;
+    public $_fechaIngreso;
 
     //campos null
-    private $_idEmpleadoS;
-    private $_fechaSalida;
-    private $_importe;
-    private $_tiempo;
+    public $_idEmpleadoS;
+    public $_fechaSalida;
+    public $_importe;
+    public $_tiempo;
 
     public function Estacionamiento($patente,$color,$foto,$idEmpleadoE,$fechaIngreso,$idEmpleadoS = null,$fechaSalida = null,$importe = null,$tiempo = null){
 
@@ -25,12 +25,12 @@ class Estacionamiento{
 
     }
 
-    public static function TraerTodoLosCds()
+    public static function TraerTodosLosRegistros()
 	{
 			$objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
-			$consulta =$objetoAccesoDato->RetornarConsulta("select id,titel as titulo, interpret as cantante,jahr as año from cds");
+			$consulta =$objetoAccesoDato->RetornarConsulta("select * from estacionamiento");
 			$consulta->execute();			
-			return $consulta->fetchAll(PDO::FETCH_CLASS, "cd");		
+			return $consulta->fetchAll(PDO::FETCH_CLASS, "Estacionamiento");		
 	}
 
 }
