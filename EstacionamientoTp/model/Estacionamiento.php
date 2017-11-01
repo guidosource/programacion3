@@ -15,6 +15,7 @@ class Estacionamiento{
     public $_importe;
     public $_tiempo;
 
+    /*
     public function Estacionamiento($patente,$color,$foto,$idEmpleadoE,$fechaIngreso,$idEmpleadoS = null,$fechaSalida = null,$importe = null,$tiempo = null){
 
         $this->_patente = $patente;
@@ -24,7 +25,8 @@ class Estacionamiento{
         $this->fechaIngreso = $fechaIngreso;
 
     }
-
+    */
+    
     public static function TraerTodosLosRegistros()
 	{
 			$objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
