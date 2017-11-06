@@ -12,7 +12,7 @@ class Empleado{
     public $turno;
     public $perfil;
 
-    // DATOS : ALTA - BAJA - MODIFICAR - LISTAR
+    // DATOS : ALTA - BAJA - MODIFICAR - LISTAR - ETC.
     
     public function Alta(){
 
@@ -70,13 +70,22 @@ class Empleado{
         return $consulta->rowCount();
     }
 
-    public static function Listar(){
+    public static function TraerTodos(){
 
-        $reflector = new ReflectionClass('Empleado');
         $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
         $consulta =$objetoAccesoDato->RetornarConsulta("select * from empleado");
         $consulta->execute();			
         return $consulta->fetchAll(PDO::FETCH_CLASS,"Empleado");
+    }
+
+    public static function BuscarPorId($id){
+
+        $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
+        $consulta = $objetoAccesoDato->RetornarConsulta("SELECT * FROM empleado WHERE id=:id");
+        $consulta->bindValue(':id',$id,PDO::PARAM_INT);
+        $consulta->execute();
+        return $consulta->fetchAll(PDO::FETCH_CLASS,"Empleado");
+
     }
 
 }

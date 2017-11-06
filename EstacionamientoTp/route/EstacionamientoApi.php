@@ -1,7 +1,8 @@
 <?php
 require_once '../model/Estacionamiento.php';
-require_once '../model/Vehiculo.php';
-
+//require_once '../model/Vehiculo.php';
+//require_once '../model/Vehiculo.php';
+//require_once '../model/Vehiculo.php';
 
 
 class EstacionamientoApi{
@@ -12,6 +13,8 @@ class EstacionamientoApi{
         $newResponse = $response->withJson($todosLosRegistros, 200);  
       return $newResponse;
   }
+
+  
 }
 
 

@@ -15,9 +15,9 @@ $a->perfil = 'empleado';
 
 
 $a->Modificar();
+$b = Empleado::BuscarPorId(34);
 
-
-var_dump($a);
+var_dump($b);
 
 
 

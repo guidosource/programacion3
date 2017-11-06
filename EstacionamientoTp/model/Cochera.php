@@ -56,12 +56,22 @@ class Cochera{
         return $consulta->rowCount();
     }
         
-    public static function Listar(){
+    public static function TraerTodos(){
 
         $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
         $consulta =$objetoAccesoDato->RetornarConsulta("select * from cochera");
         $consulta->execute();			
         return $consulta->fetchAll(PDO::FETCH_CLASS,"Cochera");
+    }
+
+    public static function BuscarPorId($id){
+        
+        $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
+        $consulta = $objetoAccesoDato->RetornarConsulta("SELECT * FROM cochera WHERE id=:id");
+        $consulta->bindValue(':id',$id,PDO::PARAM_INT);
+        $consulta->execute();
+        return $consulta->fetchAll(PDO::FETCH_CLASS,"Cochera");
+
     }
 
 

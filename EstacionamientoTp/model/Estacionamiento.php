@@ -3,93 +3,94 @@ require_once 'AccesoDatos.php';
 
 class Estacionamiento{
 
-   private $_id;
-   private $_idEmpleadoEntrada;
-   private $_idCochera;
-   private $_fechaEntrada;
-   private $_capacidad;
+    //registros de operaciones
+    public $id;
+    public $idEmpleadoIngreso;
+    public $idCochera;
+    public $fechaIngreso;
 
    //campos null
-   private $_idEmpleadoSalida;
-   private $_fechaSalida;
+   public $idEmpleadoSalida;
+   public $fechaSalida;
 
-   //constructor
-   public function Estacionamiento($idEmpleadoEntrada, $idCochera, $fechaEntrada, $capacidad, $id = null)
+    public static function DefinirNombreCapacidad($nombre,$capacidad){
+        $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
+        $consulta = $objetoAccesoDato->RetornarConsulta("INSERT into administracion (capacidad,nombre)values('$nombre','$capacidad')");
+        $consulta->execute();
+        return $objetoAccesoDato->RetornarUltimoIdInsertado();
+    }
+
+    public static function ObtenerCapacidad(){
+        $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
+        $consulta = $objetoAccesoDato->RetornarConsulta("SELECT cantidad FROM administracion LIMIT 1");
+        $consulta->execute();
+        return $objetoAccesoDato->fetchAll();
+
+    }
+
+   public function Alta()
    {
-        $this->setIdEmpleadoEntrada($idEmpleadoEntrada);
-        $this->setIdCochera($idCochera);
-        $this->setFechaEntrada($fechaEntrada);
-        $this->setCapacidad($capacidad);
-        $this->setId($id);
+       $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
+       $consulta =$objetoAccesoDato->RetornarConsulta("INSERT into estacionamiento (idEmpleadoIngreso,idCochera,fechaIngreso)values('$this->idEmpleadoIngreso','$this->idCochera','$this->fechaIngreso')");
+       $consulta->execute();
+       return $objetoAccesoDato->RetornarUltimoIdInsertado();              
    }
 
-   //Setters y Getters
-   public function setId($id){
-        $this->_id = $id;
+   public function Baja(){
+       
+       $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
+       $consulta =$objetoAccesoDato->RetornarConsulta("
+       delete 
+       from estacionamiento 				
+       WHERE id=:id");	
+       $consulta->bindValue(':id',$this->id, PDO::PARAM_INT);		
+       $consulta->execute();
+       return $consulta->rowCount();
    }
-   
-   public function getId(){
-       return $this->_id;
+       
+   public function Modificar(){
+
+       $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
+       $consulta = $objetoAccesoDato->RetornarConsulta("UPDATE estacionamiento set
+       idEmpleadoIngreso=:idEmpleadoIngreso
+       idCochera=:idCochera
+       fechaIngreso=:fechaIngreso
+       WHERE id=:id");
+       $consulta->bindValue(':id',$this->id,PDO::PARAM_INT);
+       $consulta->bindValue(':idEmpleadoIngreso',$this->idEmpleadoIngreso,PDO::PARAM_INT);
+       $consulta->bindValue(':idCochera',$this->idCochera,PDO::PARAM_INT);
+       return $consulta->execute();
    }
+       
+   public static function BajaPorId($id){
+       
+       $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
+       $consulta =$objetoAccesoDato->RetornarConsulta("
+       delete 
+       from estacionamiento 				
+       WHERE id=:id");	
+       $consulta->bindValue(':id',$id, PDO::PARAM_INT);		
+       $consulta->execute();
+       return $consulta->rowCount();
+   }
+       
+   public static function TraerTodos(){
 
-    public function setIdEmpleadoEntrada($idEmpleado){
-        $this->_idEmpleadoEntrada = $idEmpleado;
-    }
+       $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
+       $consulta =$objetoAccesoDato->RetornarConsulta("select * from estacionamiento");
+       $consulta->execute();			
+       return $consulta->fetchAll(PDO::FETCH_CLASS,"Estacionamiento");
+   }
+       
+   public static function BuscarPorId($id){
 
-    public function getIdEmpleadoEntrada(){
-        return $this->_idEmpleadoEntrada;
-    }
+       $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
+       $consulta = $objetoAccesoDato->RetornarConsulta("SELECT * FROM estacionamiento WHERE id=:id");
+       $consulta->bindValue(':id',$id,PDO::PARAM_INT);
+       $consulta->execute();
+       return $consulta->fetchAll(PDO::FETCH_CLASS,"Estacionamiento");
 
-   public function setIdCochera($idCochera){
-        $this->_idCochera = $idCochera;
-    }
-
-    public function getIdCochera(){
-        return $this->_idCochera;
-    }
-
-    public function setFechaEntrada($fecha){
-        $this->_fechaEntrada = $fecha;
-    }
-
-    public function getFechaEntrada(){
-        return $this->_fechaEntrada;
-    }
-
-    public function setCapacidad($capacidad){
-        $this->_capacidad = $capacidad;
-    }
-
-    public function getCapacidad(){
-        return $this->_capacidad;
-    }
-
-    public function setIdEmpleadoSalida($idEmpleado){
-        $this->_idEmpleadoSalida = $idEmpleado;
-    }
-
-    public function getIdEmpleadoSalida(){
-        return $this->_idEmpleadoSalida;
-    }
-
-    public function setFechaSalida($fecha){
-        $this->_fechaSalida = $fecha;
-    }
-
-    public function getFechaSalida(){
-        return $this->_fechaSalida;
-    }
-
-    
-    /*
-    public static function TraerTodosLosRegistros()
-	{
-			$objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
-			$consulta =$objetoAccesoDato->RetornarConsulta("select * from estacionamiento");
-			$consulta->execute();			
-			return $consulta->fetchAll(PDO::FETCH_CLASS, "Estacionamiento");		
-    }
-    */
+   }
 
 }
 
