@@ -8,9 +8,30 @@ class Login{
     //private static $clave = 'top_secret';
     //private static $encriptacion = ['HS256'];
 
-    public function VerificarUsuario($request, $response,$args){
+    public function VerificarUsuario($request,$response){
         
-        echo "hola";
+        $datos = $request->getParsedBody();
+
+        //Verifica que los campos no esten indefinidos.
+        if(isset($datos['email']) && isset($datos['clave'])){
+
+            $resultado = Empleado::BuscarPorEmailClave($datos['email'],$datos['clave']);
+        }
+        else{
+            $respuesta = new stdclass();
+            $respuesta->error = "undefined-index";
+            return $response->withJson($respuesta,500);
+        }
+        //Verifica si el usuario y la clave son correctas
+        if($resultado == 1){
+            
+        }
+        else{
+            $respuesta = new stdclass();
+            $respuesta->error = "Email o contraseña incorrectos";
+            return $response->withJson($respuesta,500);
+        }
+       
         /*
         try{
             //throw new Exception("");

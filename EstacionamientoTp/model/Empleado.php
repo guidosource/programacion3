@@ -88,13 +88,14 @@ class Empleado{
 
     }
 
-    public static function BuscarPorNombreClave($nombre,$clave){
+    public static function BuscarPorEmailClave($email,$clave){
         $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
-        $consulta = $objetoAccesoDato->RetornarConsulta("SELECT * FROM empleado WHERE nombre=:nombre AND clave=:clave");
-        $consulta->bindValue(":nombre",$nombre,PDO::PARAM_STR);
+        $consulta = $objetoAccesoDato->RetornarConsulta("SELECT * FROM empleado WHERE email=:email AND clave=:clave");
+        $consulta->bindValue(":email",$email,PDO::PARAM_STR);
         $consulta->bindValue(":clave",$clave,PDO::PARAM_STR);
         $consulta->execute();
-        return $consulta->fetchAll();
+        $retorno = $consulta->fetchAll(PDO::FETCH_CLASS,"Empleado");
+        return $retorno;        
     }
 
 }

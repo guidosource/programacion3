@@ -2,37 +2,30 @@
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 
-require_once '../vendor/autoload.php';
-require_once '../route/EstacionamientoApi.php';
-require_once '../route/Login.php';
+require '../vendor/autoload.php';
+require_once '../controller/Login.php';
 
-$app = new \Slim\App;
-/*$app->get('/hello/{name}', function (Request $request, Response $response) {
+$configuration = [
+    'settings' => [
+        'displayErrorDetails' => true,
+    ],
+];
+$c = new \Slim\Container($configuration);
+$app = new \Slim\App($c);
+
+//$app = new \Slim\App;
+
+$app->get('/hello/{name}', function (Request $request, Response $response) {
     $name = $request->getAttribute('name');
     $response->getBody()->write("Hello, $name");
 
     return $response;
-});*/
+});
+
+$app->post('/', \Login::class . ':VerificarUsuario');
 
 
-$app->post('/login', \Login::class. 'VerificarUsuario');
-
-/*
-$app->group('/estacionamiento', function () {
-    
-     $this->get('/', \EstacionamientoApi::class . ':TraerTodos');
-    
-    // $this->get('/{id}', \cdApi::class . ':traerUno');
-   
-    // $this->post('/', \cdApi::class . ':CargarUno');
-   
-    // $this->delete('/', \cdApi::class . ':BorrarUno');
-   
-   //  $this->put('/', \cdApi::class . ':ModificarUno');
-        
-   });
-*/
 $app->run();
 
-?>
 
+?>
