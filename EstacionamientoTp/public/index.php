@@ -4,10 +4,13 @@ use \Psr\Http\Message\ResponseInterface as Response;
 
 require '../vendor/autoload.php';
 require_once '../controller/Login.php';
+require_once '../controller/Admin.php';
+
 
 $configuration = [
     'settings' => [
         'displayErrorDetails' => true,
+        'addContentLengthHeader' => false,
     ],
 ];
 $c = new \Slim\Container($configuration);
@@ -22,10 +25,13 @@ $app->get('/hello/{name}', function (Request $request, Response $response) {
     return $response;
 });
 
-$app->post('/', \Login::class . ':VerificarUsuario');
+$app->post('/login', \Login::class . ':SignIn');
+
+$app->post('/altaEmpleado', \Admin::class . ':AltaEmpleado');//->add(\Admin::class . ':VerificarAdmin');
+
+$app->post('/saludo', \Admin::class . ':Saludo')->add(\Admin::class . ':VerificarAdmin');
 
 
 $app->run();
-
 
 ?>

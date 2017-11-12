@@ -10,14 +10,14 @@ class Empleado{
     public $sexo;
     public $clave;
     public $turno;
-    public $perfil;
+    public $adm;
 
     // DATOS : ALTA - BAJA - MODIFICAR - LISTAR - ETC.
     
     public function Alta(){
-
+        $pass = sha1($this->clave); // encripta la clave en sha;
         $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
-        $consulta =$objetoAccesoDato->RetornarConsulta("INSERT into empleado (nombre,email,sexo,clave,turno,perfil)values('$this->_nombre','$this->_email','$this->_sexo','$this->_clave','$this->_turno','$this->_perfil')");
+        $consulta =$objetoAccesoDato->RetornarConsulta("INSERT into empleado (nombre,email,sexo,clave,turno,adm)values('$this->nombre','$this->email','$this->sexo','$pass','$this->turno','$this->adm')");
         $consulta->execute();
         return $objetoAccesoDato->RetornarUltimoIdInsertado();
                    
@@ -38,6 +38,7 @@ class Empleado{
 
     public function Modificar(){
 
+        $pass = sha1($this->clave); // encripta la clave en sha;
         $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
         $consulta = $objetoAccesoDato->RetornarConsulta("UPDATE empleado
         set nombre=:nombre,
@@ -45,15 +46,15 @@ class Empleado{
         sexo=:sexo,
         clave=:clave,
         turno=:turno,
-        perfil=:perfil
+        adm=:adm
         WHERE id=:id");
         $consulta->bindValue(':id',$this->id,PDO::PARAM_INT);
         $consulta->bindValue(':nombre',$this->nombre,PDO::PARAM_STR);
         $consulta->bindValue(':email',$this->email,PDO::PARAM_STR);
         $consulta->bindValue(':sexo',$this->sexo,PDO::PARAM_STR);
-        $consulta->bindValue(':clave',$this->clave,PDO::PARAM_STR);
+        $consulta->bindValue(':clave',$pass,PDO::PARAM_STR);
         $consulta->bindValue(':turno',$this->turno,PDO::PARAM_STR);
-        $consulta->bindValue(':perfil',$this->perfil,PDO::PARAM_STR);
+        $consulta->bindValue(':adm',$this->adm,PDO::PARAM_BOOL);
         return $consulta->execute();
 
     }
@@ -73,7 +74,7 @@ class Empleado{
     public static function TraerTodos(){
 
         $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
-        $consulta =$objetoAccesoDato->RetornarConsulta("select * from empleado");
+        $consulta =$objetoAccesoDato->RetornarConsulta("SELECT id,nombre,email,sexo,clave,turno,adm FROM empleado");
         $consulta->execute();			
         return $consulta->fetchAll(PDO::FETCH_CLASS,"Empleado");
     }
@@ -81,7 +82,7 @@ class Empleado{
     public static function BuscarPorId($id){
 
         $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
-        $consulta = $objetoAccesoDato->RetornarConsulta("SELECT * FROM empleado WHERE id=:id");
+        $consulta = $objetoAccesoDato->RetornarConsulta("SELECT id,nombre,email,sexo,clave,turno,adm FROM empleado WHERE id=:id");
         $consulta->bindValue(':id',$id,PDO::PARAM_INT);
         $consulta->execute();
         return $consulta->fetchAll(PDO::FETCH_CLASS,"Empleado");
@@ -89,10 +90,12 @@ class Empleado{
     }
 
     public static function BuscarPorEmailClave($email,$clave){
+        
+        $pass = sha1($clave); // encripta la clave en sha;
         $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
-        $consulta = $objetoAccesoDato->RetornarConsulta("SELECT * FROM empleado WHERE email=:email AND clave=:clave");
+        $consulta = $objetoAccesoDato->RetornarConsulta("SELECT id,nombre,email,sexo,clave,turno,adm FROM empleado WHERE email=:email AND clave=:clave");
         $consulta->bindValue(":email",$email,PDO::PARAM_STR);
-        $consulta->bindValue(":clave",$clave,PDO::PARAM_STR);
+        $consulta->bindValue(":clave",$pass,PDO::PARAM_STR);
         $consulta->execute();
         $retorno = $consulta->fetchAll(PDO::FETCH_CLASS,"Empleado");
         return $retorno;        
