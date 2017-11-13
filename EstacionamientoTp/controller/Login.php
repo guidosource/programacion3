@@ -31,8 +31,6 @@ class Login{
                 $respuesta->error = "Email o contraseña incorrectos";
                 return $response->withJson($respuesta,500);
             }
-            var_dump($resultado);
-            die();
         }
         else{
             $respuesta = new stdclass();

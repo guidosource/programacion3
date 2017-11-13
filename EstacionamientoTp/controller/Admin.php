@@ -13,7 +13,7 @@ class Admin{
             $empleado->email = $datos['email'];
             $empleado->clave = $datos['clave'];
             $empleado->sexo = $datos['sexo'];
-            $empleado->admin = $datos['admin'];
+            $empleado->adm = $datos['admin'];
             $empleado->turno = $datos['turno'];
             // Se inserta en la bd el nuevo empleado.
             $empleado->Alta();
@@ -27,15 +27,30 @@ class Admin{
 
     public function VerificarAdmin($request,$response,$next){
 
-        $token = $request->getParsedBody();
-        AutentificadorJWT::VerificarToken($token);
-        //$objDelaRespuesta= new stdclass();
-        //$objDelaRespuesta->respuesta="";
-        //$nueva=$response->withJson($objDelaRespuesta, 401);
+        $token = $request->getHeader('token');
         
-        $response = $next($request,$response);
-        return $response;
+        //$eltoken = $token[0];
+        try{
+            AutentificadorJWT::VerificarToken($token[0]);
+            $data = AutentificadorJWT::ObtenerData($token[0]);
+            if($data->admin == 1){
+                $response = $next($request,$response);
+                return $response;
+            }
+            else{
+                $response->withStatus(404);
+                $response->withHeader('Content-Type', 'text/html');
+                $response->write('Page not found');
+                return $response;
+                
+            }
+        }
+        catch(Exception $ex){
+            $respuesta = new stdclass();
+            $respuesta->error = "token invalido";
+            return $response->withJson($respuesta,500);            
 
+        }
     }
     
     public function Saludo($request,$response){

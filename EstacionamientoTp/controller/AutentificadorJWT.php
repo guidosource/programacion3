@@ -13,7 +13,7 @@ class AutentificadorJWT{
         $ahora = time();
         $payload = array(
             'iat' =>$ahora,
-            'exp' =>$ahora + (60*60),
+            'exp' =>$ahora + (60 * 60),
             'aud' => self::Aud(),
             'data' => $datos,
             'app' => "Estacionamiento TP"
@@ -24,8 +24,7 @@ class AutentificadorJWT{
 
     public static function VerificarToken($token)
     {
-        var_dump($token);
-        die();
+        
         if(empty($token)|| $token=="")
         {
             throw new Exception("El token esta vacio.");
@@ -66,6 +65,23 @@ class AutentificadorJWT{
         $aud .= gethostname();
         
         return sha1($aud);
+    }
+
+    public static function ObtenerPayLoad($token)
+    {
+        return JWT::decode(
+            $token,
+            self::$claveSecreta,
+            self::$tipoEncriptacion
+        );
+    }
+     public static function ObtenerData($token)
+    {
+        return JWT::decode(
+            $token,
+            self::$claveSecreta,
+            self::$tipoEncriptacion
+        )->data;
     }
 }
 
