@@ -11,13 +11,14 @@ class Empleado{
     public $clave;
     public $turno;
     public $adm;
+    public $estado;
 
     // DATOS : ALTA - BAJA - MODIFICAR - LISTAR - ETC.
     
     public function Alta(){
         $pass = sha1($this->clave); // encripta la clave en sha;
         $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
-        $consulta =$objetoAccesoDato->RetornarConsulta("INSERT into empleado (nombre,email,sexo,clave,turno,adm)values('$this->nombre','$this->email','$this->sexo','$pass','$this->turno','$this->adm')");
+        $consulta =$objetoAccesoDato->RetornarConsulta("INSERT into empleado (nombre,email,sexo,clave,turno,adm,estado)values('$this->nombre','$this->email','$this->sexo','$pass','$this->turno','$this->adm','$this->estado')");
         $consulta->execute();
         return $objetoAccesoDato->RetornarUltimoIdInsertado();
                    
@@ -47,6 +48,7 @@ class Empleado{
         clave=:clave,
         turno=:turno,
         adm=:adm
+        estado=:estado
         WHERE id=:id");
         $consulta->bindValue(':id',$this->id,PDO::PARAM_INT);
         $consulta->bindValue(':nombre',$this->nombre,PDO::PARAM_STR);
@@ -55,6 +57,7 @@ class Empleado{
         $consulta->bindValue(':clave',$pass,PDO::PARAM_STR);
         $consulta->bindValue(':turno',$this->turno,PDO::PARAM_STR);
         $consulta->bindValue(':adm',$this->adm,PDO::PARAM_BOOL);
+        $consulta->bindValue(':estado',$this->estado,PDO::PARAM_STR);
         return $consulta->execute();
 
     }
@@ -74,7 +77,7 @@ class Empleado{
     public static function TraerTodos(){
 
         $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
-        $consulta =$objetoAccesoDato->RetornarConsulta("SELECT id,nombre,email,sexo,clave,turno,adm FROM empleado");
+        $consulta =$objetoAccesoDato->RetornarConsulta("SELECT id,nombre,email,sexo,turno,adm,estado FROM empleado");
         $consulta->execute();			
         return $consulta->fetchAll(PDO::FETCH_CLASS,"Empleado");
     }
@@ -82,7 +85,7 @@ class Empleado{
     public static function BuscarPorId($id){
 
         $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
-        $consulta = $objetoAccesoDato->RetornarConsulta("SELECT id,nombre,email,sexo,clave,turno,adm FROM empleado WHERE id=:id");
+        $consulta = $objetoAccesoDato->RetornarConsulta("SELECT id,nombre,email,sexo,clave,turno,adm,estado FROM empleado WHERE id=:id");
         $consulta->bindValue(':id',$id,PDO::PARAM_INT);
         $consulta->execute();
         return $consulta->fetchAll(PDO::FETCH_CLASS,"Empleado");
@@ -93,13 +96,15 @@ class Empleado{
         
         $pass = sha1($clave); // encripta la clave en sha;
         $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
-        $consulta = $objetoAccesoDato->RetornarConsulta("SELECT id,nombre,email,sexo,clave,turno,adm FROM empleado WHERE email=:email AND clave=:clave");
+        $consulta = $objetoAccesoDato->RetornarConsulta("SELECT id,nombre,email,sexo,clave,turno,adm,estado FROM empleado WHERE email=:email AND clave=:clave");
         $consulta->bindValue(":email",$email,PDO::PARAM_STR);
         $consulta->bindValue(":clave",$pass,PDO::PARAM_STR);
         $consulta->execute();
         $retorno = $consulta->fetchAll(PDO::FETCH_CLASS,"Empleado");
         return $retorno;        
     }
+
+
 
 }
 

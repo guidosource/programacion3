@@ -5,7 +5,7 @@ use \Psr\Http\Message\ResponseInterface as Response;
 require '../vendor/autoload.php';
 require_once '../controller/Login.php';
 require_once '../controller/Admin.php';
-
+require_once '../controller/EmpleadoController.php';
 
 $configuration = [
     'settings' => [
@@ -25,9 +25,15 @@ $app->get('/hello/{name}', function (Request $request, Response $response) {
     return $response;
 });
 
+//General
 $app->post('/login', \Login::class . ':SignIn');
 
-$app->post('/altaEmpleado', \Admin::class . ':AltaEmpleado');//->add(\Admin::class . ':VerificarAdmin');
+//Rutas Solo Admin
+$app->post('/nuevoempleado', \EmpleadoController::class . ':NuevoEmpleado');//->add(\Admin::class . ':VerificarAdmin');
+$app->post('/actualizarempleado', \EmpleadoController::class . ':ActualizarEmpleado');
+$app->post('/eliminarempleado', \EmpleadoController::class . ':EliminarEmpleado');
+$app->post('/todoslosempleados', \EmpleadoController::class . ':TodosLosEmpleados');
+
 
 $app->post('/saludo', \Admin::class . ':Saludo')->add(\Admin::class . ':VerificarAdmin');
 
