@@ -14,19 +14,26 @@ abstract class Estados{
 class EmpleadoController{
 
     public function NuevoEmpleado($request,$response,$args){
+        if(count(Empleado::BuscarPorEmail($request->getParsedBody()["email"])) == 0){
 
-        $empleado = new Empleado();
-        $empleado->nombre = $request->getParsedBody()["nombre"];
-        $empleado->email = $request->getParsedBody()["email"];
-        $empleado->sexo = $request->getParsedBody()["sexo"];
-        $empleado->clave = $request->getParsedBody()["clave"];
-        $empleado->turno = $request->getParsedBody()["turno"];
-        $empleado->adm = $request->getParsedBody()["adm"];
-        $empleado->estado = Estados::ACTIVO;
-        $empleado->Alta();
-        $response->write('Nuevo empleado dado de alta');
-        $response->withStatus(200);
-        return $response;
+            $empleado = new Empleado();
+            $empleado->nombre = $request->getParsedBody()["nombre"];
+            $empleado->email = $request->getParsedBody()["email"];
+            $empleado->sexo = $request->getParsedBody()["sexo"];
+            $empleado->clave = $request->getParsedBody()["clave"];
+            $empleado->turno = $request->getParsedBody()["turno"];
+            $empleado->adm = $request->getParsedBody()["adm"];
+            $empleado->estado = Estados::ACTIVO;
+            $empleado->Alta();
+            $response->write('Nuevo empleado dado de alta');
+            $response->withStatus(200);
+            return $response;
+        }
+        else{
+            $response->write('El email ya existe');
+            $response->withStatus(500);
+            return $response;
+        }
     }
 
     public function ActualizarEmpleado($request,$response){

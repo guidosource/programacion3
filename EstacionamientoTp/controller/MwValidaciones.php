@@ -1,58 +1,96 @@
 <?php
 class MwValidaciones{
 
-    public function ValidarNuevoEmpleado($response,$request,$next){
+    public function ValidarNuevoEmpleado($request,$response,$next){
 
         $errores = array();
-        $reg_nombre_apellido = "/^[a-zA-ZÑñáéíóúÁÉÍÓÚäëïöüÄËÏÖÜàèìòùÀÈÌÒÙ\s]+$/";
+        $dataOk = array();
+        $reg_nombre_apellido = "/^[a-zA-ZÑñáéíóúÁÉÍÓÚäëïöüÄËÏÖÜàèìòùÀÈÌÒÙ\s]{0,49}+$/";
+        $reg_email = "/^[0-9a-z_\-\.]+@[0-9a-z\-\.]+\.[a-z]{2,4}$/i";
+        $reg_clave = "/^[\s\S]{0,8}$/";
         
         //Comprueba si llegaron los campos requeridos
-        if(isset($response->getParsedBody()['nombre']) && isset($response->getParsedBody()['email']) && 
-        isset($response->getParsedBody()['sexo']) && isset($response->getParsedBody()['clave']) &&
-        isset($response->getParsedBody()['turno']) && isset($response->getParsedBody()['adm'])){
+        if(isset($request->getParsedBody()['nombre']) && isset($request->getParsedBody()['email']) && 
+        isset($request->getParsedBody()['sexo']) && isset($request->getParsedBody()['clave']) &&
+        isset($request->getParsedBody()['turno']) && isset($request->getParsedBody()['adm'])){
             //nombre
-            if(!empty($response->getParsedBody()['nombre'])){
-                if(preg_match($reg_nombre_apellido,$response->getParsedBody()['nombre'])){
-                    $errores[] = "Nombre OK";
+            if(!empty($request->getParsedBody()['nombre'])){
+                if(preg_match($reg_nombre_apellido,$request->getParsedBody()['nombre'])){
+                    $dataOk[] = 'nombre';
                 }
                 else{
-                    $errores[] = "Ingreso invalido. Solo letras";
+                    $errores['nombre'] = 'Ingreso invalido. Solo letras';
                 }
             }
             else{
-                $errores[] = "El nombre esta vacio";
-            }
-            //apellido
-            if(!empty($response->getParsedBody()['apellido'])){
-                if(preg_match($reg_nombre_apellido,$response->getParsedBody()['apellido'])){
-                    $errores[] = "Apellido OK";
-                }
-                else{
-                    $errores[] = "Ingreso invalido. Solo letras";
-                }
-            }
-            else{
-                $errores[] = "El apellido esta vacio";
+                $errores['nombre'] = "El nombre esta vacio";
             }
             //email
-            if(!empty($response->getParsedBody()['email'])){
-                if(preg_match($reg_nombre_apellido,$response->getParsedBody()['email'])){
-                    $errores[] = "Email OK";
+            if(!empty($request->getParsedBody()['email'])){
+                if(preg_match($reg_email,$request->getParsedBody()['email'])){
+                    $dataOk[] = "email";
                 }
                 else{
-                    $errores[] = "Ingreso invalido. Formato invalido";
+                    $errores['email'] = "Ingreso invalido. Formato invalido";
                 }
             }
             else{
-                $errores[] = "El email esta vacio";
+                $errores['email'] = "El email esta vacio";
             }
             //sexo
-            //clave
+            if(!empty($request->getParsedBody()['sexo'])){
+                if('m' == $request->getParsedBody()['sexo'] || 'f' == $request->getParsedBody()['sexo'] ){
+                    $dataOk[] = "sexo";
+                }
+                else{
+                    $errores['sexo'] = "Ingreso invalido. Formato invalido";
+                }
+            }
+            else{
+                $errores['sexo'] = "El sexo esta vacio";
+            }
             //turno
+            if(!empty($request->getParsedBody()['turno'])){
+                if('m' == $request->getParsedBody()['turno'] || 't' == $request->getParsedBody()['turno'] || 'n' == $request->getParsedBody()['turno'] ){
+                    $dataOk[] = "turno";
+                }
+                else{
+                    $errores['turno'] = "Ingreso invalido. Formato invalido";
+                }
+            }
+            else{
+                $errores['turno'] = "El turno esta vacio";
+            }
             //adm
-            if(count($errores) == 0){
+            if(!empty($request->getParsedBody()['adm'])){
+                if($request->getParsedBody()['adm'] == 'true' || $request->getParsedBody()['adm'] == 'false'){
+                
+                    $dataOk[] = "adm";
+                }
+                else{
+                    $errores['adm'] = "Ingreso invalido. Formato invalido";
+                }
+            }
+            else{
+                $errores['adm'] = "El adm esta vacio";
+            }
+            //clave
+            if(!empty($request->getParsedBody()['clave'])){
+                if(preg_match($reg_clave,$request->getParsedBody()['clave'])){
+                    $dataOk[] = "clave";
+                }
+                else{
+                    $errores['clave'] = "Ingreso invalido. Formato invalido";
+                }
+            }
+            else{
+                $errores['clave'] = "el campo clave esta vacio";
+            }
+    
+            if(count($dataOk) == 6){
                 //TODO OK!
-                $response = $next($response,$request);
+                $response = $next($request,$response);
+
                 return $response;
             }
             else{

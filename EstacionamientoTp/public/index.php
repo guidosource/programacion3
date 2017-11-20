@@ -6,6 +6,8 @@ require '../vendor/autoload.php';
 require_once '../controller/Login.php';
 require_once '../controller/Admin.php';
 require_once '../controller/EmpleadoController.php';
+require_once '../controller/MwValidaciones.php';
+
 
 $configuration = [
     'settings' => [
@@ -29,7 +31,7 @@ $app->get('/hello/{name}', function (Request $request, Response $response) {
 $app->post('/login', \Login::class . ':SignIn');
 
 //Rutas Solo Admin
-$app->post('/nuevoempleado', \EmpleadoController::class . ':NuevoEmpleado');//->add(\Admin::class . ':VerificarAdmin');
+$app->post('/nuevoempleado', \EmpleadoController::class . ':NuevoEmpleado')->add(\MWValidaciones::class . ':ValidarNuevoEmpleado');
 $app->post('/actualizarempleado', \EmpleadoController::class . ':ActualizarEmpleado');
 $app->post('/eliminarempleado', \EmpleadoController::class . ':EliminarEmpleado');
 $app->post('/todoslosempleados', \EmpleadoController::class . ':TodosLosEmpleados');
