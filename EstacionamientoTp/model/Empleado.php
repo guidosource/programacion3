@@ -2,8 +2,25 @@
 
 require_once 'AccesoDatos.php';
 
-class Empleado{
+abstract class EmpleadoEstados{    
+    const ACTIVO = 'Activo';
+    const SUSPENDIDO = 'Suspendido';
+    const BAJA = 'Baja';
+}
 
+abstract class EmpleadoSexo{
+    const MASCULINO = 'Masculino';
+    const FEMENINO = 'Femenino';
+}
+
+abstract class EmpleadoTurnos{
+    const DIURNO = 'Diurno';
+    const VESPERTINO = 'Vespertino';
+    const NOCTURNO = 'Nocturno';
+}
+
+class Empleado{
+    
     public $id;
     public $nombre;
     public $email;
@@ -59,7 +76,6 @@ class Empleado{
         $consulta->bindValue(':adm',$adm,PDO::PARAM_BOOL);
         $consulta->bindValue(':estado',$this->estado,PDO::PARAM_STR);
         return $consulta->execute();
-
     }
 
     public static function BajaPorId($id){

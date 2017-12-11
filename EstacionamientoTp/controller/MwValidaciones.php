@@ -1,4 +1,7 @@
+
 <?php
+require_once '../model/Empleado.php';
+
 class MwValidaciones{
 
     public function ValidarNuevoEmpleado($request,$response,$next){
@@ -28,7 +31,13 @@ class MwValidaciones{
             //email
             if(!empty($request->getParsedBody()['email'])){
                 if(preg_match($reg_email,$request->getParsedBody()['email'])){
-                    $dataOk[] = "email";
+                    if(count(Empleado::BuscarPorEmail($request->getParsedBody()["email"])) == 0)
+                    {
+                        $dataOk[] = "email";
+                    }
+                    else{
+                        $errores['email'] = "El email ya se encuentra registrado";
+                    }
                 }
                 else{
                     $errores['email'] = "Ingreso invalido. Formato invalido";
@@ -39,7 +48,7 @@ class MwValidaciones{
             }
             //sexo
             if(!empty($request->getParsedBody()['sexo'])){
-                if('m' == $request->getParsedBody()['sexo'] || 'f' == $request->getParsedBody()['sexo'] ){
+                if(Sexo::MASCULINO == $request->getParsedBody()['sexo'] || Sexo::FEMENINO == $request->getParsedBody()['sexo'] ){
                     $dataOk[] = "sexo";
                 }
                 else{
@@ -51,7 +60,7 @@ class MwValidaciones{
             }
             //turno
             if(!empty($request->getParsedBody()['turno'])){
-                if('m' == $request->getParsedBody()['turno'] || 't' == $request->getParsedBody()['turno'] || 'n' == $request->getParsedBody()['turno'] ){
+                if(Turnos::DIURNO == $request->getParsedBody()['turno'] || Turnos::VESPERTINO == $request->getParsedBody()['turno'] || Turnos::NOCTURNO == $request->getParsedBody()['turno'] ){
                     $dataOk[] = "turno";
                 }
                 else{
@@ -63,7 +72,7 @@ class MwValidaciones{
             }
             //adm
             if(!empty($request->getParsedBody()['adm'])){
-                if($request->getParsedBody()['adm'] == 'true' || $request->getParsedBody()['adm'] == 'false'){
+                if($request->getParsedBody()['adm'] == Admin::TRUE || $request->getParsedBody()['adm'] == Admin::FALSE){
                 
                     $dataOk[] = "adm";
                 }

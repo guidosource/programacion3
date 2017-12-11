@@ -1,24 +1,9 @@
 <?php
 
-require_once 'Estacionamiento.php';
-require_once 'Empleado.php';
+$prueba = date('Y-m-d H:i:s');
+var_dump($prueba);
+sleep(3);
+$prueba2 = date('Y-m-d H:i:s');
+$res = date_diff($prueba,$prueba2);
+var_dump($res);
 
-
-$a = new Empleado();
-$a->id = 34;
-$a->nombre = 'raul';
-$a->email = 'asd@asd';
-$a->sexo = 'm';
-$a->clave = '123asd';
-$a->turno = 'manana';
-$a->perfil = 'empleado';
-
-
-$a->Modificar();
-$b = Empleado::BuscarPorId(34);
-
-var_dump($b);
-
-
-
-?>

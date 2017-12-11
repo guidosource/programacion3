@@ -7,11 +7,15 @@ class Vehiculo{
     public $patente;
     public $color;
     public $foto;
+    public $prioridad;
+    public $estado;
 
     public function Alta()
-    {
+    {   
+        $prioridad = (boolean)$this->prioridad;
+        $estado = (boolean)$this->estado;
         $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
-        $consulta =$objetoAccesoDato->RetornarConsulta("INSERT into vehiculo (patente,color,foto)values('$this->patente','$this->color','$this->foto')");
+        $consulta =$objetoAccesoDato->RetornarConsulta("INSERT into vehiculo (patente,color,foto,prioridad,estado)values('$this->patente','$this->color','$this->foto','$prioridad','$estado')");
         $consulta->execute();
         return $objetoAccesoDato->RetornarUltimoIdInsertado();
                
@@ -30,17 +34,22 @@ class Vehiculo{
     }
         
     public function Modificar(){
-
+        $prioridad = (boolean)$this->prioridad;
+        $estado = (boolean)$this->estado;
         $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
         $consulta = $objetoAccesoDato->RetornarConsulta("UPDATE vehiculo set
         patente=:patente
         color=:color
         foto=:foto
+        prioridad=:prioridad
+        estado=:estado
         WHERE id=:id");
         $consulta->bindValue(':id',$this->id,PDO::PARAM_INT);
         $consulta->bindValue(':patente',$this->patente,PDO::PARAM_STR);
         $consulta->bindValue(':color',$this->color,PDO::PARAM_STR);
         $consulta->bindValue(':foto',$this->foto,PDO::PARAM_STR);
+        $consulta->bindValue(':prioridad',$prioridad,PDO::PARAM_BOOL);
+        $consulta->bindValue(':estado',$estado,PDO::PARAM_BOOL);
         return $consulta->execute();
     }
         

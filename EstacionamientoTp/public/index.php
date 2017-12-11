@@ -4,9 +4,10 @@ use \Psr\Http\Message\ResponseInterface as Response;
 
 require '../vendor/autoload.php';
 require_once '../controller/Login.php';
-require_once '../controller/Admin.php';
+require_once '../controller/AdminController.php';
 require_once '../controller/EmpleadoController.php';
 require_once '../controller/MwValidaciones.php';
+require_once '../controller/ValidacionPermisos.php';
 
 
 $configuration = [
@@ -31,14 +32,15 @@ $app->get('/hello/{name}', function (Request $request, Response $response) {
 $app->post('/login', \Login::class . ':SignIn');
 
 //Rutas Solo Admin
-$app->post('/nuevoempleado', \EmpleadoController::class . ':NuevoEmpleado')->add(\MWValidaciones::class . ':ValidarNuevoEmpleado');
+$app->post('/nuevoempleado', \EmpleadoController::class . ':NuevoEmpleado')->add(\MWValidaciones::class . ':ValidarNuevoEmpleado')->add(\ValidacionPermisos::class . ':VerificarAdmin');
 $app->post('/actualizarempleado', \EmpleadoController::class . ':ActualizarEmpleado');
 $app->post('/eliminarempleado', \EmpleadoController::class . ':EliminarEmpleado');
-$app->post('/todoslosempleados', \EmpleadoController::class . ':TodosLosEmpleados');
+$app->get('/todoslosempleados', \EmpleadoController::class . ':TodosLosEmpleados');
+$app->post('/suspenderempleado', \AdminController::class . ':SuspenderEmpleado');
 
-
-$app->post('/saludo', \Admin::class . ':Saludo')->add(\Admin::class . ':VerificarAdmin');
-
+//Pruebas
+$app->post('/saludoAdm', \AdminController::class . ':Saludo')->add(\ValidacionPermisos::class . ':VerificarAdmin');
+$app->post('/saludoE', \EmpleadoController::class . ':SaludoEmpleado')->add(\ValidacionPermisos::class . ':VerificarToken');
 
 $app->run();
 
