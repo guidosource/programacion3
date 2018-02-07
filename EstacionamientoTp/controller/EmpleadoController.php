@@ -5,7 +5,7 @@ require_once '../model/Cochera.php';
 require_once '../model/Vehiculo.php';
 require_once '../model/Administracion.php';
 
-//CLASE CON LAS ACCIONES DEL USUARIO EMPLEADO
+//CLASE CON LAS FUNCIONES DEL USUARIO EMPLEADO
 class EmpleadoController{
 
     public function NuevaOperacion($request,$response){
@@ -89,6 +89,15 @@ class EmpleadoController{
     private function CalcularTarifa($fechaIngreso,$fechaSalida){
         $tiempo = $fechaIngreso - $fechaSalida;
         
+
+    }
+
+    //FUNCIONES OPERATIVAS
+
+    public function traerVehiculosEstacionados($request,$response){
+
+        $estacionados = Vehiculo::traerEstacionados();
+        return $response->withJson($estacionados,200);
 
     }
     

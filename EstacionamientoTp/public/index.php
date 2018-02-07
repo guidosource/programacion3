@@ -6,9 +6,13 @@ require '../vendor/autoload.php';
 require_once '../controller/Login.php';
 require_once '../controller/AdminController.php';
 require_once '../controller/EmpleadoController.php';
-require_once '../controller/MwValidaciones.php';
+
 require_once '../controller/ValidacionPermisos.php';
 
+//MIDDLEWARE
+
+require_once '../mw/Cors.php';
+require_once '../mw/MwValidaciones.php';
 
 $configuration = [
     'settings' => [
@@ -37,6 +41,10 @@ $app->post('/actualizarempleado', \EmpleadoController::class . ':ActualizarEmple
 $app->post('/eliminarempleado', \EmpleadoController::class . ':EliminarEmpleado');
 $app->get('/todoslosempleados', \EmpleadoController::class . ':TodosLosEmpleados');
 $app->post('/suspenderempleado', \AdminController::class . ':SuspenderEmpleado');
+
+//Rutas Empleados/Todos
+
+$app->get('/empleado/estacionados', \EmpleadoController::class . ':traerVehiculosEstacionados')->add(\Cors::class . ':HabilitarCORSTodos');
 
 //Pruebas
 $app->post('/saludoAdm', \AdminController::class . ':Saludo')->add(\ValidacionPermisos::class . ':VerificarAdmin');

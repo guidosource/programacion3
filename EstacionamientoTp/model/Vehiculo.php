@@ -83,6 +83,14 @@ class Vehiculo{
 
     }
 
+    public static function traerEstacionados(){
+
+        $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
+        $consulta = $objetoAccesoDato->RetornarConsulta("SELECT * FROM vehiculo WHERE estacionado=1");
+        $consulta->execute();
+        return $consulta->fetchAll(PDO::FETCH_CLASS,"Vehiculo");
+    }
+
 }
 
 
