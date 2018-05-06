@@ -45,6 +45,7 @@ $app->post('/suspenderempleado', \AdminController::class . ':SuspenderEmpleado')
 //Rutas Empleados/Todos
 
 $app->get('/empleado/estacionados', \EmpleadoController::class . ':traerVehiculosEstacionados')->add(\Cors::class . ':HabilitarCORSTodos');
+$app->post('/empleado/altavehiculo', \EmpleadoController::class . ':altaVehiculo')->add(\Cors::class . ':HabilitarCORSTodos');
 
 //Pruebas
 $app->post('/saludoAdm', \AdminController::class . ':Saludo')->add(\ValidacionPermisos::class . ':VerificarAdmin');

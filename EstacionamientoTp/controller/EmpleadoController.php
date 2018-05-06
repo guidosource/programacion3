@@ -91,7 +91,28 @@ class EmpleadoController{
         
 
     }
+    //FUNCIONES VEHICULOS
+    
+    public function altaVehiculo($request,$response){
 
+        $files = $request->getUploadedFiles();
+        $foto = $files['foto'];
+        $nombre = $foto->getClientFilename();
+        $tipo = $foto->getClientMediaType();
+        $foto->moveTo("http://localhost/workspace/programacion3/EstacionamientoTp/assets/images/$nombre");
+        
+        return $response;
+        
+        $vehiculo = new Vehiculo();
+        $vehiculo->patente = $request->getParsedBody()["patente"];
+        $vehiculo->color = $request->getParsedBody()["color"];
+        $vehiculo->marca = $request->getParsedBody()["marca"];
+        $vehiculo->estacionado = 0;
+        
+
+        //$vehiculo->foto = $request->getParsedBody()["foto"];
+
+    }
     //FUNCIONES OPERATIVAS
 
     public function traerVehiculosEstacionados($request,$response){
@@ -100,7 +121,7 @@ class EmpleadoController{
         return $response->withJson($estacionados,200);
 
     }
-    
+
     
     public function ActualizarEmpleado($request,$response){
         
